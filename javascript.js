@@ -8,43 +8,50 @@ let currentOperator = '';
 controlsContainer.addEventListener('click', (e) => {
     let userInput = e.target.value;
     if (userInput) {
+
+        if (userInput === 'c') {
+            display.textContent = '';
+            currentOperator = '';
+            displayValue = '';
+        }
+        else {
+
+            switch (userInput) {
+                case '+':
+                    currentOperator = '+';
+                    break;
+                case '-':
+                    currentOperator = '-'
+                    break;
+                case 'x':
+                    currentOperator = 'x'
+                    break;
+                case '/':
+                    currentOperator = '/'
+                    break;
+                default:
+                    break;
+            }
+
+
+            displayValue += userInput !== '=' ? userInput : '';
+
+            if (userInput === '=') {
+                operate(displayValue, currentOperator);
+            }
+
+            if (userInput !== '=') {
+                display.textContent += userInput;
+            }
+        }
         // check if current display string index is an operator
         // if it is don't add anything
         // helps prevent user from chaining multiple operators and improves UX
-
-        switch (userInput) {
-            case '+':
-                currentOperator = '+';
-                break;
-            case '-':
-                currentOperator = '-'
-                break;
-            case 'x':
-                currentOperator = 'x'
-                break;
-            case '/':
-                currentOperator = '/'
-                break;
-        
-            default:
-                break;
-        }
-
-        
-        displayValue += userInput !== '=' ? userInput : '' ;
-
-        if (userInput === '=') {
-            operate(displayValue, currentOperator);
-        }
-        
-        if (userInput !== '=') {
-            display.textContent += userInput;
-        }
     }
 });
 
 function operate(expression, operator) {
-    
+
     let result = 0;
     let numbers = expression.split(operator);
     let n1 = parseFloat(numbers[0]);
@@ -63,7 +70,7 @@ function operate(expression, operator) {
             result = divide(n1, n2);
             break;
 
-        case '*':
+        case 'x':
             result = multiply(n1, n2);
             break;
 
