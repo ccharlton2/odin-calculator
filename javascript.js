@@ -1,7 +1,7 @@
 let controlsContainer = document.querySelector('.container');
 let display = document.querySelector('.display');
 let displayValue = '';
-let evaluateNext = false;
+let operatorCount = 0;
 
 let currentOperator = '';
 
@@ -14,7 +14,30 @@ controlsContainer.addEventListener('click', (e) => {
             currentOperator = '';
             displayValue = '';
         }
+
+        if (userInput === 'backspace') {
+            if (displayValue) {
+                let slicedCharacter = displayValue.slice(-1);
+                displayValue = displayValue.slice(0, displayValue.length - 1);
+                display.textContent = displayValue;
+
+                if (slicedCharacter === currentOperator) {
+                    currentOperator = '';
+                }
+            }
+        }
         else {
+            if (userInput !== '=' && userInput !== 'c') {
+
+                display.textContent += userInput;
+
+                // displayValue = displayValue.replace(currentOperator, userInput);
+                // currentOperator = userInput;
+                // display.textContent = displayValue;
+                // remove last character (operator) from displayValue
+                // make display = displayValue
+
+            }
 
             switch (userInput) {
                 case '+':
@@ -34,14 +57,10 @@ controlsContainer.addEventListener('click', (e) => {
             }
 
 
-            displayValue += userInput !== '=' ? userInput : '';
+            displayValue += userInput !== '=' && userInput !== 'c' ? userInput : '';
 
             if (userInput === '=' && currentOperator) {
                 operate(displayValue, currentOperator);
-            }
-
-            if (userInput !== '=') {
-                display.textContent += userInput;
             }
         }
         // check if current display string index is an operator
@@ -83,6 +102,7 @@ function operate(expression, operator) {
     displayValue = result;
     display.textContent = result;
     currentOperator = '';
+    operatorCount = 0;
 }
 
 function add(n1, n2) {
@@ -99,4 +119,16 @@ function divide(n1, n2) {
 
 function multiply(n1, n2) {
     return n1 * n2;
+}
+
+function containsOperator(expression) {
+    let = knownOperators = ['+', '-', '/', 'x'];
+    let hasOperator = false;
+    knownOperators.forEach(operator => {
+        if (expression.includes(operator)) {
+            hasOperator = true;
+        }
+    });
+
+    return hasOperator;
 }
