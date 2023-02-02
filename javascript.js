@@ -36,7 +36,7 @@ controlsContainer.addEventListener('click', (e) => {
 
             displayValue += userInput !== '=' ? userInput : '';
 
-            if (userInput === '=') {
+            if (userInput === '=' && currentOperator) {
                 operate(displayValue, currentOperator);
             }
 
@@ -80,7 +80,9 @@ function operate(expression, operator) {
 
     console.log(result)
 
+    displayValue = result;
     display.textContent = result;
+    currentOperator = '';
 }
 
 function add(n1, n2) {
