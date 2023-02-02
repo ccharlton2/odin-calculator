@@ -3,7 +3,7 @@ let display = document.querySelector('.display');
 let displayValue = '';
 let evaluateNext = false;
 
-let operator = '';
+let currentOperator = '';
 
 controlsContainer.addEventListener('click', (e) => {
     let userInput = e.target.value;
@@ -14,16 +14,16 @@ controlsContainer.addEventListener('click', (e) => {
 
         switch (userInput) {
             case '+':
-                operator = '+';
+                currentOperator = '+';
                 break;
             case '-':
-                operator = '-'
+                currentOperator = '-'
                 break;
             case 'x':
-                operator = 'x'
+                currentOperator = 'x'
                 break;
             case '/':
-                operator = '/'
+                currentOperator = '/'
                 break;
         
             default:
@@ -34,31 +34,21 @@ controlsContainer.addEventListener('click', (e) => {
         displayValue += userInput !== '=' ? userInput : '' ;
 
         if (userInput === '=') {
-            operate(displayValue);
+            operate(displayValue, currentOperator);
         }
         
-        display.textContent += userInput;
+        if (userInput !== '=') {
+            display.textContent += userInput;
+        }
     }
 });
 
-function add(n1, n2) {
-    return n1 + n2;
-}
-
-function subtract(n1, n2) {
-    return n1 - n2;
-}
-
-function divide(n1, n2) {
-    return n1 / n2;
-}
-
-function multiply(n1, n2) {
-    return n1 * n2;
-}
-
-function operate(operator, n1, n2) {
+function operate(expression, operator) {
+    
     let result = 0;
+    let numbers = expression.split(operator);
+    let n1 = parseFloat(numbers[0]);
+    let n2 = parseFloat(numbers[1]);
 
     switch (operator) {
         case '+':
@@ -81,5 +71,23 @@ function operate(operator, n1, n2) {
             return 'ERROR!'
     }
 
-    display += result;
+    console.log(result)
+
+    display.textContent = result;
+}
+
+function add(n1, n2) {
+    return n1 + n2;
+}
+
+function subtract(n1, n2) {
+    return n1 - n2;
+}
+
+function divide(n1, n2) {
+    return n1 / n2;
+}
+
+function multiply(n1, n2) {
+    return n1 * n2;
 }
