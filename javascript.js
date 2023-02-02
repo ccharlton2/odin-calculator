@@ -132,3 +132,17 @@ function containsOperator(expression) {
 
     return hasOperator;
 }
+
+function replaceOperator(expression, operator) {
+    let = knownOperators = ['+', '-', '/', 'x'];
+    let splitExpression = expression.split("");
+    let replacedExpression = splitExpression.map((char) => {
+        if (knownOperators.includes(char)) {
+            char = operator;
+        }
+
+        return char;
+    });
+
+    return replacedExpression.join("");
+}
