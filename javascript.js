@@ -1,80 +1,78 @@
 let controlsContainer = document.querySelector('.container');
 let display = document.querySelector('.display');
 let displayValue = '';
-let operatorCount = 0;
+let operationComplete = false;
 
+let firstNumber = 0;
+let secondNumber = 0;
+let userInput = '';
+let previousResult = 'none';
 let currentOperator = '';
 
 controlsContainer.addEventListener('click', (e) => {
-    let userInput = e.target.value;
+    userInput = e.target.value;
     if (userInput) {
 
+        // clear
         if (userInput === 'c') {
-            display.textContent = '';
-            currentOperator = '';
-            displayValue = '';
+            clear();
         }
 
-        if (userInput === 'backspace') {
-            if (displayValue) {
-                let slicedCharacter = displayValue.slice(-1);
-                displayValue = displayValue.slice(0, displayValue.length - 1);
-                display.textContent = displayValue;
-
-                if (slicedCharacter === currentOperator) {
-                    currentOperator = '';
-                }
-            }
+        switch (userInput) {
+            case '+':
+                firstNumber = display.textContent;
+                clear(false);
+                currentOperator = '+';
+                break;
+            case '-':
+                currentOperator = '-'
+                break;
+            case 'x':
+                currentOperator = 'x'
+                break;
+            case '/':
+                currentOperator = '/'
+                break;
+            default:
+                break;
         }
-        else {
-            if (userInput !== '=' && userInput !== 'c') {
-
-                display.textContent += userInput;
-
-                // displayValue = displayValue.replace(currentOperator, userInput);
-                // currentOperator = userInput;
-                // display.textContent = displayValue;
-                // remove last character (operator) from displayValue
-                // make display = displayValue
-
-            }
-
-            switch (userInput) {
-                case '+':
-                    currentOperator = '+';
-                    break;
-                case '-':
-                    currentOperator = '-'
-                    break;
-                case 'x':
-                    currentOperator = 'x'
-                    break;
-                case '/':
-                    currentOperator = '/'
-                    break;
-                default:
-                    break;
-            }
 
 
-            displayValue += userInput !== '=' && userInput !== 'c' ? userInput : '';
-
-            if (userInput === '=' && currentOperator) {
-                operate(displayValue, currentOperator);
-            }
+        if (userInput === '=') {
+            userInput = '';
+            secondNumber = display.textContent;
+            console.log(`I am numba wan: ${firstNumber}`);
+            console.log(`I am numba two: ${secondNumber}`);
+            display.textContent = operate(parseFloat(firstNumber), parseFloat(secondNumber), currentOperator);
         }
-        // check if current display string index is an operator
-        // if it is don't add anything
-        // helps prevent user from chaining multiple operators and improves UX
+
+        displayValue += userInput;
+        display.textContent += userInput;
+
+        // operate(parseFloat(firstNumber), parseFloat(secondNumber), currentOperator);
     }
 });
 
-function operate(expression, operator) {
+function clear(clearNumbers = true) {
+
+    if (clearNumbers) {
+        firstNumber = '';
+        secondNumber = '';
+    }
+
+    display.textContent = '';
+    currentOperator = '';
+    displayValue = '';
+    userInput = '';
+}
+
+function operate(n1, n2, operator) {
+
+    // let numbers = expression.split(operator);
+    // let n1 = parseFloat(numbers[0]);
+    // let n2 = parseFloat(numbers[1]);
 
     let result = 0;
-    let numbers = expression.split(operator);
-    let n1 = parseFloat(numbers[0]);
-    let n2 = parseFloat(numbers[1]);
 
     switch (operator) {
         case '+':
@@ -102,7 +100,7 @@ function operate(expression, operator) {
     displayValue = result;
     display.textContent = result;
     currentOperator = '';
-    operatorCount = 0;
+    operationComplete = true;
 }
 
 function add(n1, n2) {
